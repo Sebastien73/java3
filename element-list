@@ -1,0 +1,12 @@
+dungeon
+dungeon.characters
+dungeon.characters.Mage
+dungeon.characters.warrior
+dungeon.game
+dungeon.menus
+dungeon.stuffs.defensiveStuffs.potions
+dungeon.stuffs.defensiveStuffs.shields
+dungeon.stuffs.offensiveStuffs.spells
+dungeon.stuffs.offensiveStuffs.weapons
+dungeon.stuffs.offensiveStuffs.weapons.maces
+dungeon.stuffs.offensiveStuffs.weapons.swords
