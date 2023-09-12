@@ -8,14 +8,31 @@ import dungeon.game.Game;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Menu {
+    /**
+     * attribute scanner typeof Scanner
+     */
     private final Scanner scanner = new Scanner(System.in);
-    private ArrayList<Warrior> warriorsList;
-    private ArrayList<Mage> wizardsList;
+    /**
+     * Attribute warriorsList typeof ArrayList<Collection>
+     */
+    private final ArrayList<Warrior> warriorsList;
+    /**
+     * Attribute wizardsList typeof ArrayList<Collection>
+     */
+    private final ArrayList<Mage> wizardsList;
 
     /**
+     * Constructor method without parameters and initialize array attribute
+     */
+    public Menu() {
+        this.warriorsList = new ArrayList<>();
+        this.wizardsList = new ArrayList<>();
+    }
+
+    /**
+     * Get next result of prompt for switch options
      * @param question string
      * @return scanner.next()
-     * Get next result of prompt for switch options
      */
     private String getResult(String question) {
         System.out.println(question);
@@ -23,11 +40,11 @@ public class Menu {
     }
 
     /**
+     * Get int for prompt in switch menu options
      * @param question string
      * @return scanner.next()
-     * Get int for prompt in switch menu options
      */
-    public  int getIntResult(String question) {
+    public int getIntResult(String question) {
         try {
             return Integer.parseInt(getResult(question));
         } catch (NumberFormatException e) {
@@ -36,22 +53,24 @@ public class Menu {
     }
 
     /**
-     * @return new Warrior()
      * Invoke a new Warrior
+     * @return Warrior
      */
     public Warrior createWarrior(){
         return new Warrior();
     }
 
     /**
-     * @return new Mage()
      * Invoke a new Mage
+     * @return Mage
      */
     public Mage createWizard(){
         return new Mage();
     }
 
     /**
+     * This param is a string who contains a question and both options for switch in a menu
+     * ex : "Principal menu : \n1 for create character\n2 for show all list of characters\n3 for left the game"
      * @param question string
      * @return string result
      */
@@ -67,14 +86,14 @@ public class Menu {
 
     /**
      * Principal menu
-     * Create character or exit program
+     * Create character / Show list of characters / exit program
      */
     public void menuPrincipal(){
-        int create = getIntResult("Principal menu : \n1 for create character\n2 for left the game"); //// On déclare la variable selector1 de type INT avec comme valeur l'attente d'un entier pour la variable clavier
-        switch (create) { // On initialise un nouveau switch
-            case 1 -> //Si la réponse est 1 alors on print une chaîne de caractére
-                    createCharacter();
-            case 2 -> { //Si la réponse est 2 alors on print une chaîne de caractére et on stop le programme
+        int create = getIntResult("Principal menu : \n1 for create character\n2 for show all list of characters\n3 for left the game");
+        switch (create) {
+            case 1 -> createCharacter();
+            case 2 -> showAllLists(warriorsList, wizardsList);
+            case 3 -> {
                 System.out.println("Left the game");
                 System.exit(0);
             }
@@ -82,20 +101,19 @@ public class Menu {
     }
 
     /**
-     * Menu of creation of character
-     * Back to previously menu
-     * Exit program
+     * Create menu with 4 options
+     * create warrior / create wizard / back to main menu / left the game
      */
     public void createCharacter() {
-        int create = getIntResult("Select type character : \n1 for Warrior\n2 for Wizard\n3 for back previously menu\n4 for left the game"); //// On déclare la variable selector1 de type INT avec comme valeur l'attente d'un entier pour la variable clavier
-        switch (create) { // On initialise un nouveau switch
-            case 1 -> //Si la réponse est 1, on va créer un guerrier
+        int create = getIntResult("Select type character : \n1 for Warrior\n2 for Wizard\n3 for back to main menu\n4 for left the game");
+        switch (create) {
+            case 1 ->
                     warriorSelect();
-            case 2 -> //Si la réponse est 2, on va créer un mage
+            case 2 ->
                     wizardSelect();
-            case 3 -> //Si la réponse est 3, retour menu précédent
+            case 3 ->
                     menuPrincipal();
-            case 4 -> { //Si la réponse est 4 alors on print une chaîne de caractére et on stop le programme
+            case 4 -> {
                 System.out.println("Left the game");
                 System.exit(0);
             }
@@ -103,40 +121,45 @@ public class Menu {
     }
 
     /**
-     * Select warrior type
+     * Select character warrior
+     * Call createWarrior method and return a new Warrior
+     * Add Warrior created previously in warriorList collection
      * Call infosOfCharacter
      */
     private void warriorSelect() {
         System.out.println("Warrior selected");
         Warrior warrior = createWarrior();
+        this.warriorsList.add(warrior);
         infosOfCharacter(warrior,true);
     }
 
     /**
-     * Select mage type
+     * Select character mage
+     * Call createWizard method and return a new Mage
+     * Add Mage created previously in wizardsList collection
      * Call infosOfCharacter
      */
     private void wizardSelect() {
         System.out.println("Wizard selected");
         Mage mage = createWizard();
+        this.wizardsList.add(mage);
         infosOfCharacter(mage,false);
     }
 
     /**
-     *
-     * @param character Characters
-     * @param isWarrior boolean
      * Change infos of the character previously created or play game directly
      * Back to the principal menu
      * Exit program
+     * @param character Characters
+     * @param isWarrior boolean
      */
     private void infosOfCharacter(Characters character, boolean isWarrior) {
-        int setInfo = getIntResult("Indicate if you want to custom your " + (isWarrior ? "warrior" : "wizard") + " \n1 for Yes\n2 for No\n3 for back previously menu\n4 for left the game");
+        int setInfo = getIntResult("Indicate if you want to custom your " + (isWarrior ? "warrior" : "wizard") + " \n1 for Yes\n2 for No\n3 for back to main menu\n4 for left the game");
         switch (setInfo) {
             case 1 ->
                     setInfosOfCharacter(character,isWarrior);
             case 2 ->
-                   readyToPlay(character,isWarrior);
+                    readyToPlay(character,isWarrior);
             case 3 -> //Si la réponse est 3, retour menu précédent
                     menuPrincipal();
             case 4 -> { //Si la réponse est 4 alors on print une chaîne de caractére et on stop le programme
@@ -147,21 +170,19 @@ public class Menu {
     }
 
     /**
-     *
+     * Call setParameters method
      * @param character Characters
      * @param isWarrior boolean
-     * Call setParameters method
      */
     private void setInfosOfCharacter(Characters character, boolean isWarrior) {
         setParameters(character,isWarrior);
     }
 
     /**
-     *
-     * @param character Characters
-     * @param isWarrior boolean
      * Call different method to set attributes of character
      * Last method called : readyToPlay
+     * @param character Characters
+     * @param isWarrior boolean
      */
     private void setParameters(Characters character, boolean isWarrior) {
         setNameCharacter(character);
@@ -171,9 +192,8 @@ public class Menu {
     }
 
     /**
-     *
-     * @param character Character
      * Set a name for current character
+     * @param character Character
      */
     private void setNameCharacter(Characters character) {
         String nameCharacter = getStringResult("Enter name for your character");
@@ -186,9 +206,9 @@ public class Menu {
     }
 
     /**
+     * Set point of life for current character
      * @param character Characters
      * @param isWarrior boolean
-     * Set point of life for current character
      */
     private void setPointOfLifeCharacter(Characters character, boolean isWarrior) {
         int pointOfLife = getIntResult("Enter number for points of life " + (isWarrior ? "(between 5 and 10)" : "(between 3 and 6)"));
@@ -206,9 +226,9 @@ public class Menu {
     }
 
     /**
+     * Set points of strength for current character
      * @param character Characters
      * @param isWarrior boolean
-     * Set points of strength for current character
      */
     private void setPointOfAttackCharacter(Characters character, boolean isWarrior){
         int pointAtk = getIntResult("Enter number for attack's points" + ((isWarrior) ? "(between 5 and 10)" : "(between 8 and 15)"));
@@ -226,13 +246,95 @@ public class Menu {
     }
 
     /**
-     * @param character Characters
-     * @param isWarrior boolean
      * Invoke a new object Game
      * Call play method with the current character and boolean
+     * @param character Characters
+     * @param isWarrior boolean
      */
     private void readyToPlay(Characters character, boolean isWarrior) {
-        Game game = new Game();
-        game.play(character,isWarrior);
+        int playGame = getIntResult("You are ready to play ? " + " \n1 for Yes\n2 for look list of characters\n3 for back to main menu\n4 for left the game");
+        switch (playGame) {
+            case 1 -> {
+                Game game = new Game();
+                game.play(character,isWarrior);
+            }
+            case 2 ->
+                    showAllLists(this.warriorsList,this.wizardsList);
+            case 3 ->
+                    menuPrincipal();
+            case 4 -> {
+                System.out.println("Left the game");
+                System.exit(0);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + playGame);
+        };
+
+    }
+
+    /**
+     * Method for return selected warrior by user
+     * @return Characters typeof Warrior
+     */
+    private Characters warriorSelected() {
+        Characters mySelect;
+        System.out.println("Select a warrior :\n");
+        for (int i = 0; i < this.warriorsList.size(); i++) {
+            System.out.println("Warrior : " + i + " : " + this.warriorsList.get(i));
+        }
+        System.out.println("Enter a number");
+        int selectWarrior = scanner.nextInt();
+        mySelect = this.warriorsList.get(selectWarrior);
+        System.out.println("Your selection : " + mySelect);
+        return mySelect;
+    }
+
+    /**
+     * Method for return selected wizard by user
+     * @return Characters typeof Mage
+     */
+    private Characters wizardSelected() {
+        Characters mySelect;
+        System.out.println("Select a wizard ?");
+        for (int i = 0; i < this.wizardsList.size(); i++) {
+            System.out.println("Wizard : " + i + " : " + this.wizardsList.get(i));
+        }
+        System.out.println("Enter a number");
+        int selectWizard = scanner.nextInt();
+        mySelect = this.wizardsList.get(selectWizard);
+        System.out.println("Your selection : " + mySelect);
+        return mySelect;
+    }
+
+    /**
+     * Show lists of characters / Select a character in a list if is not empty or back to the main menu
+     * If list is not empty : User can choose for a warrior / a mage / back to creation menu / back to main menu or left the game
+     * @param warriorsList Collection
+     * @param wizardsList Collection
+     */
+    public void showAllLists(ArrayList<Warrior> warriorsList, ArrayList<Mage> wizardsList) {
+        System.out.println("All warriors : \n" + warriorsList + "\nAll wizards : \n" + wizardsList);
+        if (this.warriorsList.size() > 0 || this.wizardsList.size() > 0) {
+            Characters mySelect;
+            int selection = getIntResult("You want to select a character in lists ? " + "\n1 for select a warrior \n2 for select a wizard \n3 for back to the creation menu \n4 for back to main menu \5for left the program");
+            switch (selection){
+                case 1 -> {
+                    mySelect = warriorSelected();
+                    readyToPlay(mySelect,true);
+                }
+                case 2 -> {
+                    mySelect = wizardSelected();
+                    readyToPlay(mySelect,false);
+                }
+                case 3 -> createCharacter();
+                case 4 -> menuPrincipal();
+                case 5 -> {
+                    System.out.println("Left the game");
+                    System.exit(0);
+                }
+            }
+        } else {
+            System.out.println("No characters, you will be redirected to the main menu.");
+            menuPrincipal();
+        }
     }
 }
