@@ -8,7 +8,7 @@ public class DefaultSword extends Sword{
      * Constructor when object ShortSword is invoke with his attribute value
      */
     public DefaultSword() {
-        super("LittleSword",5,"Sword");
+        super("Little",5,"Sword");
     }
 
     /**

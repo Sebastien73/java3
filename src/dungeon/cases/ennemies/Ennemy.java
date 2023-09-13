@@ -1,6 +1,9 @@
 package dungeon.cases.ennemies;
 
+import dungeon.cases.CasesType;
 import dungeon.cases.cases.Case;
+import dungeon.characters.Characters;
+import java.util.Scanner;
 
 /**
  * Class Ennemy implement Case interface
@@ -81,7 +84,36 @@ public class Ennemy implements Case {
      * @return String
      */
     public String toString(){ return this.race; }
-    private void wantToFight(){ System.out.println("This " + this + " want to fight \n1-Fight\n2-Flee"); }
+
+    private void wantToFight(){
+        String nameClassParent = this.getClass().getSuperclass().getSimpleName();
+
+        if (CasesType.enumContainsValue(nameClassParent)) {
+            System.out.println("You are on " + CasesType.valueOf(nameClassParent) + " case.");
+        }
+        System.out.println("This " + this + " want to fight \n1-Fight\n2-Flee");
+    }
+
+    /**
+     * Implements method interaction of interface case
+     * @param current Characters
+     */
+    @Override
+    public void interaction(Characters current) {
+        if (current != null) {
+            chooseUserWhileFight(current);
+        }
+    }
+
+    public void chooseUserWhileFight(Characters current){
+        wantToFight();
+        Scanner scanner = new Scanner(System.in);
+        int fightChoice = scanner.nextInt();
+        switch (fightChoice) {
+            case 1 -> current.setFight(true);
+            case 2 -> current.setFleeAway(true);
+        }
+    }
 
     /**
      * Method ennemyIsAlive return boolean after compared with value of attribute pointOfLife.
@@ -89,5 +121,9 @@ public class Ennemy implements Case {
      */
     public boolean ennemyIsAlive(){
         return this.getPointOfLife() > 0;
+    }
+
+    public void receiveAttack(Characters current) {
+        this.setPointOfLife(this.getPointOfLife() - current.getPointLife());
     }
 }

@@ -6,8 +6,8 @@ public class FireballSpell extends Spell {
     /**
      * Constructor when object FireballSpell is invoke with attribute of parent Class
      */
-    protected FireballSpell() {
-        super("FireballSpell",15,"Spell");
+    public FireballSpell() {
+        super("Fireball",15,"Spell");
     }
 
     /**

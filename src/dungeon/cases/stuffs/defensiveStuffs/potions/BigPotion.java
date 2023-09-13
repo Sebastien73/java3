@@ -6,7 +6,7 @@ public class BigPotion extends Potion{
     /**
      * Constructor when object BigPotion is invoke with his attribute value
      */
-    protected BigPotion() {
+    public BigPotion() {
         super("Big health potion",5);
     }
 
@@ -14,5 +14,5 @@ public class BigPotion extends Potion{
      * Method toString return String value with attribute name of potion and point of life of class parent
      * @return String
      */
-    public String toString(){ return this.getName() + this.getPointOfLife() ;}
+    public String toString(){ return this.getName() + " (for add + "+ this.getPointOfLife() + "points of Life)";}
 }

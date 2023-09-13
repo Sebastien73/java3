@@ -7,7 +7,7 @@ public class MagicMace extends Mace{
      * Constructor when object MagicMace is invoke with his attribute value
      */
     public MagicMace() {
-        super("MagicMace",7,"Mace");
+        super("Magic",7,"Mace");
     }
 
     /**

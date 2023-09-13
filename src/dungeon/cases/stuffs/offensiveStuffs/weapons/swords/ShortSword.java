@@ -9,7 +9,7 @@ public class ShortSword extends Sword{
      * Constructor when object ShortSword is invoke with his attribute value
      */
     public ShortSword() {
-        super("ShortSword",6,"Sword");
+        super("Short",6,"Sword");
     }
 
     /**

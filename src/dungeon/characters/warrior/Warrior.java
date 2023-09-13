@@ -1,5 +1,6 @@
 package dungeon.characters.warrior;
 
+import dungeon.cases.stuffs.defensiveStuffs.shields.Shield;
 import dungeon.cases.stuffs.offensiveStuffs.weapons.Weapon;
 import dungeon.characters.Characters;
 
@@ -42,6 +43,8 @@ public class Warrior extends Characters {
         return "Name : "+this.getName() + " , "+"Life : " + this.getPointLife()+" , "+"Strength : "+ this.getPointAttack()+".";
     }
 
-
+    public void useShield(Shield shield){
+        shield.setDefense(shield.getDefPoints());
+    }
 
 }

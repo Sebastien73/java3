@@ -7,7 +7,7 @@ public class LightMace extends Mace{
      * Constructor when object LightMace is invoke with his attribute value
      */
     public LightMace() {
-        super("LightMace",6,"Mace");
+        super("Light",6,"Mace");
     }
 
     /**

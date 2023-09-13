@@ -7,7 +7,7 @@ public class MagicSword extends Sword{
      * Constructor when object MagicSword is invoke with his attribute value
      */
     public MagicSword() {
-        super("MagicSword",8,"Sword");
+        super("Magic",8,"Sword");
     }
 
     /**

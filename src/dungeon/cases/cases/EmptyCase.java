@@ -1,19 +1,18 @@
 package dungeon.cases.cases;
 
 import dungeon.characters.Characters;
-
+import static dungeon.cases.CasesType.Empty;
 /**
  * Class who implements Case interface
  */
 public class EmptyCase implements Case {
-
     /**
      * Return a string value
      * @return string
      */
     @Override
     public String toString() {
-        return "Empty case";
+        return Empty + " case";
     }
 
     /**
@@ -22,6 +21,6 @@ public class EmptyCase implements Case {
      */
     @Override
     public void interaction(Characters character) {
-        System.out.println("You are on empty case.");
+        System.out.println("You are on "+Empty+" case.");
     }
 }

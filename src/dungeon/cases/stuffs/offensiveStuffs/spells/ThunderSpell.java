@@ -7,8 +7,8 @@ public class ThunderSpell extends Spell{
     /**
      * Constructor when object ThunderSpell is invoke with attribute of parent Class
      */
-    protected ThunderSpell() {
-        super("ThunderSpell",12,"Spell");
+    public ThunderSpell() {
+        super("Thunder",12,"Spell");
     }
 
     /**

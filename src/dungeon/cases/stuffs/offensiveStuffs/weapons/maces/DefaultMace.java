@@ -8,7 +8,7 @@ public class DefaultMace extends Mace {
      * Constructor when object DefaultMace is invoke with his attribute value
      */
     public DefaultMace() {
-        super("LittleMace",4,"Mace");
+        super("Little",4,"Mace");
     }
 
     /**

@@ -1,7 +1,7 @@
 package dungeon.cases.cases;
 
 import dungeon.characters.Characters;
-
+import static dungeon.cases.CasesType.Start;
 /**
  * Class who implements Case interface
  */
@@ -12,7 +12,7 @@ public class StartCase implements Case {
      */
     @Override
     public String toString() {
-        return "Start Case";
+        return Start + " case";
     }
 
     /**
@@ -21,6 +21,6 @@ public class StartCase implements Case {
      */
     @Override
     public void interaction(Characters character) {
-        System.out.println("You are on start case.");
+        System.out.println("You are on "+ Start +" case.");
     }
 }

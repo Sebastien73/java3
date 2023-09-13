@@ -1,7 +1,9 @@
 package dungeon.characters;
 
+import dungeon.cases.ennemies.Ennemy;
 import dungeon.cases.stuffs.offensiveStuffs.weapons.Weapon;
 import dungeon.cases.stuffs.offensiveStuffs.spells.Spell;
+import dungeon.game.CharacterDeadException;
 
 /**
  * Class Characters parent of many children
@@ -12,11 +14,14 @@ abstract public class Characters {
      * attribute string name
      * attribute int pointLife
      * attribute int pointAttack
+     * attribute bool fleeAway
+     * attribute bool isFight
      */
     protected String name;
     protected int pointLife;
     protected int pointAttack;
-
+    private boolean fleeAway;
+    private boolean isFight;
 
     /**
      * Constructor used by children class (protected)
@@ -48,6 +53,16 @@ abstract public class Characters {
     public int getPointAttack(){ return this.pointAttack;}
 
     /**
+     * Getter method for attribute fleeAway
+     * @return boolean
+     */
+    public boolean isFleeAway() {return fleeAway;}
+    /**
+     * Getter method for attribute isFight
+     * @return boolean
+     */
+    public boolean isFight() {return isFight;}
+    /**
      * Setter method for set value of attribute name
      * @param name string
      */
@@ -63,6 +78,17 @@ abstract public class Characters {
      */
     public void setPointAttack(int pointAttack) { this.pointAttack = pointAttack; }
 
+    /**
+     * Setter method for set value of attribute fleeAway
+     * @param fleeAway boolean
+     */
+    public void setFleeAway(boolean fleeAway) {this.fleeAway = fleeAway;}
+
+    /**
+     * Setter method for set value of attribute isFight
+     * @param fight boolean
+     */
+    public void setFight(boolean fight) {this.isFight = fight;}
     /**
      * Method toString with abstract type for may to use in children class
      * @return string
@@ -85,7 +111,14 @@ abstract public class Characters {
         this.setPointAttack(this.getPointAttack() + spell.getAttack());
     }
 
-    protected boolean personnageIsAlive(){
+    protected boolean characterIsAlive(){
         return this.getPointLife() > 0;
+    }
+
+    public void receiveAttack(Ennemy ennemy) throws CharacterDeadException {
+        this.setPointLife(this.getPointLife() - ennemy.getPointOfAttack());
+        if (!characterIsAlive()){
+            throw new CharacterDeadException();
+        }
     }
 }

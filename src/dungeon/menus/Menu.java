@@ -3,7 +3,9 @@ package dungeon.menus;
 import dungeon.characters.Characters;
 import dungeon.characters.Mage.Mage;
 import dungeon.characters.warrior.Warrior;
+import dungeon.game.CharacterDeadException;
 import dungeon.game.Game;
+import dungeon.game.OutOfBoardException;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -88,7 +90,7 @@ public class Menu {
      * Principal menu
      * Create character / Show list of characters / exit program
      */
-    public void menuPrincipal(){
+    public void menuPrincipal() {
         int create = getIntResult("Principal menu : \n1 for create character\n2 for show all list of characters\n3 for left the game");
         switch (create) {
             case 1 -> createCharacter();
@@ -256,7 +258,12 @@ public class Menu {
         switch (playGame) {
             case 1 -> {
                 Game game = new Game();
-                game.play(character,isWarrior);
+             try{
+                 game.play(character,isWarrior);
+             } catch (CharacterDeadException | OutOfBoardException e) {
+                 System.out.println(e.getMessage());
+                 menuPrincipal();
+             }
             }
             case 2 ->
                     showAllLists(this.warriorsList,this.wizardsList);

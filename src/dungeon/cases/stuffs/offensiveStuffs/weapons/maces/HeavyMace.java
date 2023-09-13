@@ -7,7 +7,7 @@ public class HeavyMace extends Mace{
      * Constructor when object HeavyMace is invoke with his attribute value
      */
     public HeavyMace() {
-        super("HeavyMace",8,"Mace");
+        super("Heavy",8,"Mace");
     }
 
     /**
