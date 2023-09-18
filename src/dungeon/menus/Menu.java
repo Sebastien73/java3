@@ -1,5 +1,7 @@
 package dungeon.menus;
 
+import dungeon.Db;
+import dungeon.ManipCollection;
 import dungeon.characters.Characters;
 import dungeon.characters.Mage.Mage;
 import dungeon.characters.warrior.Warrior;
@@ -8,7 +10,10 @@ import dungeon.game.Game;
 import dungeon.game.OutOfBoardException;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
 public class Menu {
     /**
      * attribute scanner typeof Scanner
@@ -23,12 +28,20 @@ public class Menu {
      */
     private final ArrayList<Mage> wizardsList;
 
+    private final ArrayList<String> collection = new ArrayList<>();
+
+    private final ManipCollection list;
+
+    private Db db;
+
     /**
      * Constructor method without parameters and initialize array attribute
      */
     public Menu() {
         this.warriorsList = new ArrayList<>();
         this.wizardsList = new ArrayList<>();
+        this.list = new ManipCollection(collection);
+        this.db = new Db();
     }
 
     /**
@@ -99,6 +112,8 @@ public class Menu {
                 System.out.println("Left the game");
                 System.exit(0);
             }
+            case 4 -> showForManipList();
+//            case 5 -> this.db.connect();
         }
     }
 
@@ -344,4 +359,61 @@ public class Menu {
             menuPrincipal();
         }
     }
+
+    private void showForManipList(){
+        for (int i = 0; i < this.collection.size(); i++){
+            System.out.println("Element : " + i + " : " + this.collection.get(i) + "\n");
+        }
+
+        int question = getIntResult("You want to manipulate this list ? " + " \n1 for research\n2 for delete\n3 for back to main menu");
+        switch (question) {
+            case 1 -> research(collection);
+            case 2 -> delete(collection);
+            case 3 -> menuPrincipal();
+        }
+    }
+
+    private void research(ArrayList<String> list){
+        String data = getStringResult("Type letter for research an element the list and press enter.");
+        System.out.println(data);
+
+        List<String> researchTest = list.stream().filter(e -> e.contains(data)).toList();
+
+        System.out.println("Result of your research");
+        for (int i = 0; i < researchTest.size(); i++){
+            System.out.println("Element : " + i + " : " + researchTest.get(i) + ", ");
+        }
+
+        int question = getIntResult("What do you want to do ? " + " \n1 for delete\n2 for back to main menu\n3 for left the game");
+        switch (question) {
+            case 1 -> delete(collection);
+            case 2 -> menuPrincipal();
+            case 3 ->  {
+                System.out.println("Left the game");
+                System.exit(0);
+            }
+        }
+    }
+
+    private void delete(ArrayList<String> list1){
+        int idDelete = getIntResult("Enter an index of the list to remove element.");
+
+        for (int i = 0; i < list1.size(); i++){
+            if (idDelete == i){
+                list1.remove(i);
+            }
+        }
+        System.out.println("The list after delete.");
+        System.out.println(list1);
+
+        int question = getIntResult("Return to the main menu ? " + " \n1 for yes\n2 for quit");
+        switch (question){
+            case 1 -> menuPrincipal();
+            case 2 ->  {
+                System.out.println("Left the game");
+                System.exit(0);
+            }
+        }
+    }
+
 }

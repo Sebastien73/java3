@@ -2,6 +2,9 @@ dungeon
 dungeon.cases
 dungeon.cases.cases
 dungeon.cases.ennemies
+dungeon.cases.ennemies.dragons
+dungeon.cases.ennemies.gobelins
+dungeon.cases.ennemies.wizards
 dungeon.cases.stuffs.defensiveStuffs.potions
 dungeon.cases.stuffs.defensiveStuffs.shields
 dungeon.cases.stuffs.offensiveStuffs.spells
