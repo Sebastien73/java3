@@ -11,17 +11,23 @@ import dungeon.game.CharacterDeadException;
 abstract public class Characters {
 
     /**
+     * attribute int id
      * attribute string name
      * attribute int pointLife
      * attribute int pointAttack
      * attribute bool fleeAway
      * attribute bool isFight
+     * attribute int defaultLife
+     * attribute int defaultAttack
      */
+    protected int id;
     protected String name;
     protected int pointLife;
     protected int pointAttack;
     private boolean fleeAway;
     private boolean isFight;
+    protected int defaultLife = 5;
+    protected int defaultAttack = 5;
 
     /**
      * Constructor used by children class (protected)
@@ -33,7 +39,13 @@ abstract public class Characters {
         this.name = name;
         this.pointLife = pointLife;
         this.pointAttack = pointAttack;
+    }
 
+    protected Characters(int id,String name, int pointLife, int pointAttack) {
+        this.id = id;
+        this.name = name;
+        this.pointLife = pointLife;
+        this.pointAttack = pointAttack;
     }
 
     /**
@@ -51,6 +63,18 @@ abstract public class Characters {
      * @return attribute pointAttack value
      */
     public int getPointAttack(){ return this.pointAttack;}
+
+    public int getDefaultLife() {
+        return this.defaultLife;
+    }
+
+    public int getDefaultAttack() {
+        return this.defaultAttack;
+    }
+
+    public int getId() {
+        return this.id;
+    }
 
     /**
      * Getter method for attribute fleeAway

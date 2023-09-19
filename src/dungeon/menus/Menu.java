@@ -2,6 +2,7 @@ package dungeon.menus;
 
 import dungeon.Db;
 import dungeon.ManipCollection;
+import dungeon.cases.ennemies.wizards.Wizard;
 import dungeon.characters.Characters;
 import dungeon.characters.Mage.Mage;
 import dungeon.characters.warrior.Warrior;
@@ -12,34 +13,26 @@ import dungeon.game.OutOfBoardException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Menu {
     /**
      * attribute scanner typeof Scanner
      */
     private final Scanner scanner = new Scanner(System.in);
-    /**
-     * Attribute warriorsList typeof ArrayList<Collection>
-     */
-    private final ArrayList<Warrior> warriorsList;
-    /**
-     * Attribute wizardsList typeof ArrayList<Collection>
-     */
-    private final ArrayList<Mage> wizardsList;
 
     private final ArrayList<String> collection = new ArrayList<>();
 
     private final ManipCollection list;
 
-    private Db db;
+    /**
+     * attribute db typeof Db
+     */
+    private final Db db;
 
     /**
      * Constructor method without parameters and initialize array attribute
      */
     public Menu() {
-        this.warriorsList = new ArrayList<>();
-        this.wizardsList = new ArrayList<>();
         this.list = new ManipCollection(collection);
         this.db = new Db();
     }
@@ -104,16 +97,15 @@ public class Menu {
      * Create character / Show list of characters / exit program
      */
     public void menuPrincipal() {
-        int create = getIntResult("Principal menu : \n1 for create character\n2 for show all list of characters\n3 for left the game");
+        int create = getIntResult("Principal menu : \n1 for create character\n2 for show all list of characters\n3 for left the game\n4 for test manip collection");
         switch (create) {
             case 1 -> createCharacter();
-            case 2 -> showAllLists(warriorsList, wizardsList);
+            case 2 -> showAllLists();
             case 3 -> {
                 System.out.println("Left the game");
                 System.exit(0);
             }
             case 4 -> showForManipList();
-//            case 5 -> this.db.connect();
         }
     }
 
@@ -146,8 +138,7 @@ public class Menu {
     private void warriorSelect() {
         System.out.println("Warrior selected");
         Warrior warrior = createWarrior();
-        this.warriorsList.add(warrior);
-        infosOfCharacter(warrior,true);
+        setInfosOfCharacter(warrior,true);
     }
 
     /**
@@ -159,8 +150,7 @@ public class Menu {
     private void wizardSelect() {
         System.out.println("Wizard selected");
         Mage mage = createWizard();
-        this.wizardsList.add(mage);
-        infosOfCharacter(mage,false);
+        setInfosOfCharacter(mage,false);
     }
 
     /**
@@ -171,15 +161,13 @@ public class Menu {
      * @param isWarrior boolean
      */
     private void infosOfCharacter(Characters character, boolean isWarrior) {
-        int setInfo = getIntResult("Indicate if you want to custom your " + (isWarrior ? "warrior" : "wizard") + " \n1 for Yes\n2 for No\n3 for back to main menu\n4 for left the game");
+        int setInfo = getIntResult("Custom your " + (isWarrior ? "warrior" : "wizard") + " \n1 for Yes\n2 for back to main menu\n3 for left the game");
         switch (setInfo) {
             case 1 ->
                     setInfosOfCharacter(character,isWarrior);
             case 2 ->
-                    readyToPlay(character,isWarrior);
-            case 3 -> //Si la réponse est 3, retour menu précédent
                     menuPrincipal();
-            case 4 -> { //Si la réponse est 4 alors on print une chaîne de caractére et on stop le programme
+            case 3 -> {
                 System.out.println("Left the game");
                 System.exit(0);
             }
@@ -205,6 +193,7 @@ public class Menu {
         setNameCharacter(character);
         setPointOfLifeCharacter(character, isWarrior);
         setPointOfAttackCharacter(character,isWarrior);
+        this.db.addCharacter(character, isWarrior);
         readyToPlay(character,isWarrior);
     }
 
@@ -273,15 +262,15 @@ public class Menu {
         switch (playGame) {
             case 1 -> {
                 Game game = new Game();
-             try{
-                 game.play(character,isWarrior);
-             } catch (CharacterDeadException | OutOfBoardException e) {
-                 System.out.println(e.getMessage());
-                 menuPrincipal();
-             }
+                 try {
+                     game.play(character,isWarrior);
+                 } catch (CharacterDeadException | OutOfBoardException e) {
+                     System.out.println(e.getMessage());
+                     menuPrincipal();
+                 }
             }
             case 2 ->
-                    showAllLists(this.warriorsList,this.wizardsList);
+                    showAllLists();
             case 3 ->
                     menuPrincipal();
             case 4 -> {
@@ -300,12 +289,15 @@ public class Menu {
     private Characters warriorSelected() {
         Characters mySelect;
         System.out.println("Select a warrior :\n");
-        for (int i = 0; i < this.warriorsList.size(); i++) {
-            System.out.println("Warrior : " + i + " : " + this.warriorsList.get(i));
+        ArrayList<Warrior> warriorsList = this.db.getWarrior();
+
+        for (int i = 0; i < warriorsList.size(); i++) {
+            System.out.println("Warrior : " + i + " : " + warriorsList.get(i) + "\n");
         }
+
         System.out.println("Enter a number");
         int selectWarrior = scanner.nextInt();
-        mySelect = this.warriorsList.get(selectWarrior);
+        mySelect = warriorsList.get(selectWarrior);
         System.out.println("Your selection : " + mySelect);
         return mySelect;
     }
@@ -317,12 +309,13 @@ public class Menu {
     private Characters wizardSelected() {
         Characters mySelect;
         System.out.println("Select a wizard ?");
-        for (int i = 0; i < this.wizardsList.size(); i++) {
-            System.out.println("Wizard : " + i + " : " + this.wizardsList.get(i));
+        ArrayList<Mage> wizardsList = this.db.getWizard();
+        for (int i = 0; i < wizardsList.size(); i++) {
+            System.out.println("Wizard : " + i + " : " + wizardsList.get(i) + "\n");
         }
         System.out.println("Enter a number");
         int selectWizard = scanner.nextInt();
-        mySelect = this.wizardsList.get(selectWizard);
+        mySelect = wizardsList.get(selectWizard);
         System.out.println("Your selection : " + mySelect);
         return mySelect;
     }
@@ -330,14 +323,27 @@ public class Menu {
     /**
      * Show lists of characters / Select a character in a list if is not empty or back to the main menu
      * If list is not empty : User can choose for a warrior / a mage / back to creation menu / back to main menu or left the game
-     * @param warriorsList Collection
-     * @param wizardsList Collection
      */
-    public void showAllLists(ArrayList<Warrior> warriorsList, ArrayList<Mage> wizardsList) {
-        System.out.println("All warriors : \n" + warriorsList + "\nAll wizards : \n" + wizardsList);
-        if (this.warriorsList.size() > 0 || this.wizardsList.size() > 0) {
+    public void showAllLists() {
+        ArrayList<Warrior> warriorsList = this.db.getWarrior();
+        ArrayList<Mage> wizardsList = this.db.getWizard();
+
+        if (!warriorsList.isEmpty()) {
+            System.out.println("All warriors : \n");
+            for (Warrior warrior : warriorsList) {
+                System.out.println(warrior + "\n");
+            }
+        }
+        if (!wizardsList.isEmpty()) {
+            System.out.println("All wizards : \n");
+            for (Mage wizard : wizardsList) {
+                System.out.println(wizard + "\n");
+            }
+        }
+
+        if (!warriorsList.isEmpty() || !wizardsList.isEmpty()) {
             Characters mySelect;
-            int selection = getIntResult("You want to select a character in lists ? " + "\n1 for select a warrior \n2 for select a wizard \n3 for back to the creation menu \n4 for back to main menu \5for left the program");
+            int selection = getIntResult("You want to select a character in lists ? " + "\n1 for select a warrior \n2 for select a wizard\n3 for delete a character \n4 for back to the creation menu \n5 for back to main menu\n6 for left the program");
             switch (selection){
                 case 1 -> {
                     mySelect = warriorSelected();
@@ -347,9 +353,10 @@ public class Menu {
                     mySelect = wizardSelected();
                     readyToPlay(mySelect,false);
                 }
-                case 3 -> createCharacter();
-                case 4 -> menuPrincipal();
-                case 5 -> {
+                case 3 -> deleteCharacter();
+                case 4 -> createCharacter();
+                case 5 -> menuPrincipal();
+                case 6 -> {
                     System.out.println("Left the game");
                     System.exit(0);
                 }
@@ -416,4 +423,48 @@ public class Menu {
         }
     }
 
+    private void deleteCharacter(){
+        int selection = getIntResult("Select type of character what you want to delete \n"+"1 for warrior \n2 for wizard \n3 for back to the main menu\n4 for left the game");
+        switch (selection){
+            case 1 -> deleteWarrior();
+            case 2 -> deleteWizard();
+            case 3 -> menuPrincipal();
+            case 4 -> {
+                System.out.println("Left the game");
+                System.exit(0);
+            }
+        }
+    }
+
+    private void deleteWarrior() {
+        ArrayList<Warrior> warriorsList = this.db.getWarrior();
+        System.out.println("Select a warrior :\n");
+
+        if (!warriorsList.isEmpty()) {
+            System.out.println("All warriors : \n");
+            for (Warrior warrior : warriorsList) {
+                System.out.println(warrior + "\n");
+            }
+        }
+
+        System.out.println("Enter id what you want to delete");
+        int selectWarrior = scanner.nextInt();
+        this.db.deleteCharacter(selectWarrior);
+    }
+
+    private void deleteWizard() {
+        System.out.println("Select a wizard :\n");
+        ArrayList<Mage> wizardsList = this.db.getWizard();
+
+        if (!wizardsList.isEmpty()) {
+            System.out.println("All wizards : \n");
+            for (Mage wizard : wizardsList) {
+                System.out.println(wizard + "\n");
+            }
+        }
+
+        System.out.println("Enter id what you want to delete");
+        int selectWizard = scanner.nextInt();
+        this.db.deleteCharacter(selectWizard);
+    }
 }

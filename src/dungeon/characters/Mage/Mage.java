@@ -42,6 +42,6 @@ public class Mage extends Characters {
         return "Name : "+this.getName() + " , "+"Life : " + this.getPointLife()+" , "+"Strength : "+ this.getPointAttack()+".";
     }
 
-    public void grabPotion(Potion potion){ this.setPointLife(this.getPointLife()+ potion.getPointOfLife()); }
+    public void grabPotion(Potion potion){ this.setPointLife(this.getPointLife() + potion.getPointOfLife()); }
 
 }

@@ -34,13 +34,17 @@ public class Warrior extends Characters {
         super(name, pointLife, pointAttack);
     }
 
+    public Warrior(int id, String name, int life, int attack) {
+        super(id,name,life,attack);
+    }
+
     /**
      * Method toString for display object correctly
      * @return string
      */
     @Override
     public String toString() {
-        return "Name : "+this.getName() + " , "+"Life : " + this.getPointLife()+" , "+"Strength : "+ this.getPointAttack()+".";
+        return "Id : "+ this.getId() + ", Name : "+this.getName() + " , "+"Life : " + this.getPointLife()+" , "+"Strength : "+ this.getPointAttack()+".";
     }
 
     public void useShield(Shield shield){

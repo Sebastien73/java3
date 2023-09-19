@@ -2,7 +2,6 @@ package dungeon;
 
 import java.util.ArrayList;
 public class ManipCollection {
-//    private ArrayList<String> manip = new ArrayList<>();
 
     public ManipCollection(ArrayList<String> manip) {
         manip.add("aaa");
@@ -23,5 +22,6 @@ public class ManipCollection {
         manip.add("dsvgrggerges");
         manip.add("de");
         manip.add("ffffffffffffffff");
+//      manip.set(1, "Pierre");
     }
 }
