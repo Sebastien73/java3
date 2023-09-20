@@ -77,11 +77,12 @@ public class Db {
             ResultSet w = stmt.executeQuery(sql);
 
             while(w.next()){
+                int id = w.getInt("id");
                 String name = w.getString("name");
                 int life = w.getInt("pointLife");
                 int attack = w.getInt("pointAttack");
 
-                Mage wizardRes = new Mage(name,life,attack);
+                Mage wizardRes = new Mage(id,name,life,attack);
                 wizard.add(wizardRes);
             }
 

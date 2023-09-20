@@ -94,15 +94,19 @@ public class Menu {
      * Create character / Show list of characters / exit program
      */
     public void menuPrincipal() {
-        int create = getIntResult("Principal menu : \n1 for create character\n2 for show all list of characters\n3 for left the game\n4 for test manip collection");
+        int create = getIntResult("Principal menu : \n1 for fast party\n2 for create character\n3 for show all list of characters\n4 for left the game\n5 for test manip collection");
         switch (create) {
-            case 1 -> createCharacter();
-            case 2 -> showAllLists();
-            case 3 -> {
+            case 1 -> {
+                Warrior warrior = new Warrior();
+                readyToPlay(warrior,true);
+            }
+            case 2 -> createCharacter();
+            case 3 -> showAllLists();
+            case 4 -> {
                 System.out.println("Left the game");
                 System.exit(0);
             }
-            case 4 -> showForManipList();
+            case 5 -> showForManipList();
         }
     }
 
@@ -550,22 +554,22 @@ public class Menu {
                 setNameCharacter(selected);
                 setPointOfLifeCharacter(selected, isWarrior);
                 setPointOfAttackCharacter(selected, isWarrior);
-                this.db.updateCharacter(selected,true);
+                this.db.updateCharacter(selected,isWarrior);
                 readyToPlay(selected, isWarrior);
             }
             case 2 -> {
                 setNameCharacter(selected);
-                this.db.updateCharacter(selected,true);
+                this.db.updateCharacter(selected,isWarrior);
                 readyToPlay(selected, isWarrior);
             }
             case 3 -> {
                 setPointOfLifeCharacter(selected, isWarrior);
-                this.db.updateCharacter(selected,true);
+                this.db.updateCharacter(selected,isWarrior);
                 readyToPlay(selected, isWarrior);
             }
             case 4 -> {
                 setPointOfAttackCharacter(selected, isWarrior);
-                this.db.updateCharacter(selected,true);
+                this.db.updateCharacter(selected,isWarrior);
                 readyToPlay(selected, isWarrior);
             }
             case 5 -> menuPrincipal();

@@ -50,7 +50,7 @@ public class Mage extends Characters {
      */
     @Override
     public String toString() {
-        return "Name : "+this.getName() + " , "+"Life : " + this.getPointLife()+" , "+"Strength : "+ this.getPointAttack()+".";
+        return "Id : "+ this.getId() + ", Name : "+this.getName() + " , "+"Life : " + this.getPointLife()+" , "+"Strength : "+ this.getPointAttack()+".";
     }
 
     public void grabPotion(Potion potion){ this.setPointLife(this.getPointLife() + potion.getPointOfLife()); }
