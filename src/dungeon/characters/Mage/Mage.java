@@ -13,7 +13,7 @@ public class Mage extends Characters {
      */
     public Mage(){
         super("BobMage",5,5);
-    };
+    }
 
     /**
      * Constructor with a parameter name
@@ -31,6 +31,17 @@ public class Mage extends Characters {
      */
     public Mage(String name, int pointLife, int pointAttack) {
         super(name, pointLife, pointAttack);
+    }
+
+    /**
+     * Constructor with three parameters
+     * @param id Integer
+     * @param name string
+     * @param pointLife int
+     * @param pointAttack int
+     */
+    public Mage(int id, String name, int pointLife, int pointAttack) {
+        super(id,name,pointLife,pointAttack);
     }
 
     /**

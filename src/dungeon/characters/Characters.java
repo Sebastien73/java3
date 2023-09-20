@@ -17,8 +17,6 @@ abstract public class Characters {
      * attribute int pointAttack
      * attribute bool fleeAway
      * attribute bool isFight
-     * attribute int defaultLife
-     * attribute int defaultAttack
      */
     protected int id;
     protected String name;
@@ -26,8 +24,6 @@ abstract public class Characters {
     protected int pointAttack;
     private boolean fleeAway;
     private boolean isFight;
-    protected int defaultLife = 5;
-    protected int defaultAttack = 5;
 
     /**
      * Constructor used by children class (protected)
@@ -64,14 +60,10 @@ abstract public class Characters {
      */
     public int getPointAttack(){ return this.pointAttack;}
 
-    public int getDefaultLife() {
-        return this.defaultLife;
-    }
-
-    public int getDefaultAttack() {
-        return this.defaultAttack;
-    }
-
+    /**
+     * Getter method for attribute id
+     * @return Integer
+     */
     public int getId() {
         return this.id;
     }

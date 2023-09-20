@@ -1,7 +1,6 @@
 package dungeon.characters.warrior;
 
 import dungeon.cases.stuffs.defensiveStuffs.shields.Shield;
-import dungeon.cases.stuffs.offensiveStuffs.weapons.Weapon;
 import dungeon.characters.Characters;
 
 /**
@@ -14,7 +13,7 @@ public class Warrior extends Characters {
      */
     public Warrior(){
         super("BobWarior",5,5);
-    };
+    }
 
     /**
      * Constructor with a parameter name
@@ -34,6 +33,13 @@ public class Warrior extends Characters {
         super(name, pointLife, pointAttack);
     }
 
+    /**
+     * Constructor with four parameters
+     * @param id Integer
+     * @param name string
+     * @param life int
+     * @param attack int
+     */
     public Warrior(int id, String name, int life, int attack) {
         super(id,name,life,attack);
     }
