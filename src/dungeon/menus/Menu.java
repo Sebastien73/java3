@@ -1,6 +1,6 @@
 package dungeon.menus;
 
-import dungeon.Db;
+import dungeon.DatabaseConnection;
 import dungeon.ManipCollection;
 import dungeon.characters.Characters;
 import dungeon.characters.Mage.Mage;
@@ -9,6 +9,7 @@ import dungeon.game.CharacterDeadException;
 import dungeon.game.Game;
 import dungeon.game.OutOfBoardException;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -24,14 +25,14 @@ public class Menu {
     /**
      * attribute db typeof Db
      */
-    private final Db db;
+    private final DatabaseConnection db;
 
     /**
      * Constructor method without parameters and initialize array attribute
      */
     public Menu() {
         new ManipCollection(collection);
-        this.db = new Db();
+        this.db = new DatabaseConnection();
     }
 
     /**

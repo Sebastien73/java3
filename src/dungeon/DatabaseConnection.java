@@ -11,27 +11,31 @@ import java.util.Objects;
 /**
  * Class Db
  */
-public class Db {
+public class DatabaseConnection {
     /**
      * Attribute connect typeof Connection
      */
-    private Connection connect = null;
+    private static Connection connect = null;
     /**
      * Attribute preparedStatement typeof PreparedStatement
      */
     private PreparedStatement preparedStatement = null;
 
+    static  {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connect = DriverManager.getConnection(Config.getUrl(),Config.getUserName(),Config.getPassword());
+
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e.getStackTrace());
+        }
+    }
+
     /**
      * Method getConn for trying to connect the app at the db
      */
-    public void getConn() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            this.connect = DriverManager.getConnection(Config.getUrl(),Config.getUserName(),Config.getPassword());
-
-        } catch (ClassNotFoundException | SQLException e) {
-            System.out.println(e.getMessage());
-        }
+    public static Connection getInstance() {
+        return connect;
     }
 
     /**
@@ -42,9 +46,9 @@ public class Db {
         ArrayList<Warrior> warrior = new ArrayList<>();
         try
         {
-            getConn();
-            Statement stmt = this.connect.createStatement();
-            String sql = ("SELECT * FROM characters WHERE Type ='Warrior'");
+            connect = getInstance();
+            Statement stmt = connect.createStatement();
+            String sql = ("SELECT * FROM characters WHERE Type = 'Warrior'");
             ResultSet w = stmt.executeQuery(sql);
 
             while(w.next()){
@@ -56,9 +60,9 @@ public class Db {
                 Warrior warriorRes = new Warrior(id,name,life,attack);
                 warrior.add(warriorRes);
             }
-            this.connect.close();
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
+            connect.close();
+        } catch(SQLException e) {
+            System.out.println(e.getStackTrace());
         }
         return warrior;
     }
@@ -71,9 +75,9 @@ public class Db {
         ArrayList<Mage> wizard = new ArrayList<>();
         try
         {
-            getConn();
-            Statement stmt = this.connect.createStatement();
-            String sql = ("SELECT * FROM characters WHERE Type ='Mage'");
+            connect = getInstance();
+            Statement stmt = connect.createStatement();
+            String sql = ("SELECT * FROM characters WHERE Type = 'Mage'");
             ResultSet w = stmt.executeQuery(sql);
 
             while(w.next()){
@@ -86,10 +90,10 @@ public class Db {
                 wizard.add(wizardRes);
             }
 
-            this.connect.close();
+            connect.close();
         }
-        catch(Exception e){
-            System.out.println(e.getMessage());
+        catch(SQLException e){
+            System.out.println(e.getStackTrace());
         }
         return wizard;
     }
@@ -102,10 +106,10 @@ public class Db {
     public void addCharacter(Characters character, boolean isWarrior) {
         try
         {
-            getConn();
+            connect = getInstance();
             System.out.println("Add in progress...");
 
-            this.preparedStatement = this.connect.prepareStatement("INSERT INTO characters(name,pointLife,pointAttack,type)"+"VALUES(?,?,?,?)");
+            this.preparedStatement = connect.prepareStatement("INSERT INTO characters(name,pointLife,pointAttack,type)"+"VALUES(?,?,?,?)");
             this.preparedStatement.setString(1, character.getName());
             this.preparedStatement.setInt(2, character.getPointLife());
             this.preparedStatement.setInt(3, character.getPointAttack());
@@ -113,9 +117,9 @@ public class Db {
             this.preparedStatement.executeUpdate();
 
             System.out.println("This "+ (isWarrior ? "warrior" : "wizard") + " has been created.");
-            this.connect.close();
-        } catch(Exception e){
-            System.out.println(e.getMessage());
+            connect.close();
+        } catch(SQLException e){
+            System.out.println(e.getStackTrace());
         }
     }
 
@@ -125,16 +129,16 @@ public class Db {
      */
     public void deleteCharacter(int id){
         try {
-            getConn();
+            connect = getInstance();
             System.out.println("Delete in progress...");
 
-            this.preparedStatement = this.connect.prepareStatement("DELETE from characters "+"WHERE id = ?;");
+            this.preparedStatement = connect.prepareStatement("DELETE from characters "+"WHERE id = ?;");
             this.preparedStatement.setInt(1, id);
             this.preparedStatement.executeUpdate();
             System.out.println("This character has been deleted.");
-            this.connect.close();
+            connect.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getStackTrace());
         }
     }
 
@@ -146,10 +150,10 @@ public class Db {
      */
     public void updateCharacter(Characters character, boolean isWarrior){
         try {
-            getConn();
+            connect = getInstance();
             System.out.println("Update in progress...");
 
-            this.preparedStatement = this.connect.prepareStatement("UPDATE characters "+"SET name = ?, pointLife = ?, pointAttack = ?, type = ? WHERE id = ?;");
+            this.preparedStatement = connect.prepareStatement("UPDATE characters "+"SET name = ?, pointLife = ?, pointAttack = ?, type = ? WHERE id = ?;");
             this.preparedStatement.setString(1, character.getName());
             this.preparedStatement.setInt(2, character.getPointLife());
             this.preparedStatement.setInt(3, character.getPointAttack());
@@ -158,9 +162,9 @@ public class Db {
             this.preparedStatement.executeUpdate();
 
             System.out.println("This character has been updated.");
-            this.connect.close();
+            connect.close();
         } catch (SQLException e){
-            throw new RuntimeException(e);
+            System.out.println(e.getStackTrace());
         }
     }
 
@@ -172,8 +176,8 @@ public class Db {
     public Characters getCharacter(int id) {
         Characters mySelect = null;
         try {
-            getConn();
-            this.preparedStatement = this.connect.prepareStatement("SELECT * from characters "+"WHERE id = ?;");
+            connect = getInstance();
+            this.preparedStatement = connect.prepareStatement("SELECT * from characters "+"WHERE id = ?;");
             this.preparedStatement.setInt(1, id);
             ResultSet rs = this.preparedStatement.executeQuery();
 
@@ -186,9 +190,9 @@ public class Db {
                 }
             }
 
-            this.connect.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            connect.close();
+        } catch (SQLException e) {
+            System.out.println(e.getStackTrace());
         }
         return mySelect;
     }
